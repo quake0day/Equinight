@@ -1,0 +1,4 @@
+Equinight
+=========
+
+Chess fuzzy analysis
