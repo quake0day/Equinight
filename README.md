@@ -17,6 +17,14 @@ Chess fuzzy analysis
 	git clone git://github.com/renatopp/pgnparser.git
 	cd pgnparser
 	sudo python setup.py install
+	
+###2.Install pip
+	sudo easy_install pip
+
+###3.Using pip to install bitarray and numpy
+
+	sudo pip install bitarray
+	sudo pip install numpy
 
 ## Team
 Si Chen
