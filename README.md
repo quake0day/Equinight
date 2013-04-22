@@ -9,6 +9,15 @@ Chess fuzzy analysis
 
 **Equinight**, Chess fuzzy analysis script for *Chess Analysis*
 
+
+## How to..
+###1.Install pgnparser
+[project page for pgnparser](https://github.com/renatopp/pgnparser)
+
+	git clone git://github.com/renatopp/pgnparser.git
+	cd pgnparser
+	sudo python setup.py install
+
 ## Team
 Si Chen
 
