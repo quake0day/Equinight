@@ -25,6 +25,7 @@ Chess fuzzy analysis
 
 	sudo pip install bitarray
 	sudo pip install numpy
+	sudo pip install pymongo
 
 ## Team
 Si Chen
