@@ -28,9 +28,16 @@ def create_eco_res():
     eco_res = [0] * 500
     return eco_res
 
-    #print eco_res
-#def parse_res(res_string):
-#   if "1/2-1/2"
+
+# parse text result to a number
+def parse_res(res_string):
+    if "1/2-1/2" in res_string:
+        res = 0.5
+    elif "1-0" in res_string:
+        res = 1
+    elif "0-1" in res_string:
+        res = 0
+    return res
 
 
 def update_eco_res(dataset, eco, res):
@@ -71,6 +78,7 @@ def parse_pgn(filename):
         #moves = game.moves[0]+" "+game.moves[1]+" "+game.moves[2]+" "+game.moves[3]
         print game.white
         print game.result
+        print parse_res(game.result)
         print eco.from_moves(game.moves)[0][0]
     #print games[0].moves
     print pgn.dumps(games[0])
