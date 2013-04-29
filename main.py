@@ -4,6 +4,9 @@ import pgn
 import eco
 import ast
 from numpy import *
+from os import remove,close
+from tempfile import mkstemp
+from shutil import move
 from pymongo import MongoClient
 import re
 
@@ -12,6 +15,7 @@ DB_URL = 'localhost'
 DB_PORT = 27017
 DB_NAME = 'eco-record'
 RESULT = 'result.txt'
+RESULT_TEMP = 'temp.txt'
 global result_set
 
 class MongoDB:
@@ -74,7 +78,7 @@ def save_eco(playername, eco_res):
     result_set[1] = eco_res
     #print result_set
     if(find_existing_record(playername)):
-        pass
+        update_existing_record(playername, eco_res)
     else:
         fr = open(RESULT, 'a+')
         for item in result_set:
@@ -92,13 +96,40 @@ def update_existing_record(playername, new_eco_res):
     for line in fr.readlines():
         if line.find(playername) >= 0:
             result_set = read_list_from_line(line)
-            old_eco_res = ast.literal_eval(result_set[1])  # change string to list
-            print old_eco_res[0]
-            print new_eco_res[0]
+            try:
+                old_eco_res = ast.literal_eval(result_set[1])  # change string to list
+            except Exception, e:
+                raise e
+            #print old_eco_res[0]
+            #print new_eco_res[0]
             func = lambda x, y: x+y
             eco_res = map(func, old_eco_res, new_eco_res)
-            print eco_res
-            #s = line.replace("")
+            eco_res_str = playername+"  "+convert_list_to_string(eco_res)
+            old_eco_res_str = playername+"  "+convert_list_to_string(old_eco_res)
+            print eco_res_str
+            print old_eco_res_str
+            replace(RESULT, old_eco_res_str, eco_res_str)
+
+
+def replace(file_path, pattern, subst):
+    # create temp file
+    fh, abs_path = mkstemp()
+    new_file = open(abs_path, 'w')
+    old_file = open(file_path)
+    for line in old_file:
+        new_file.write(line.replace(pattern, subst))
+    #close temp file
+    new_file.close()
+    close(fh)
+    old_file.close()
+    #remove original file
+    remove(file_path)
+    #move new file
+    move(abs_path, file_path)
+
+
+def convert_list_to_string(list):
+    return "".join(str(list))
 
 
 def read_list_from_line(line):
@@ -133,12 +164,7 @@ def parse_pgn(filename):
         dataset = create_eco_res()
         playername = game.white
         eco_res = cal_eco_res(dataset, eco_, res)
-        #save_eco(playername, eco_res)
-        update_existing_record(playername, eco_res)
-
-    #print games[0].moves
-    #print pgn.dumps(games[0])
+        save_eco(playername, eco_res)
 
 
 parse_pgn("./data/RR1600in2006Exp.pgn")
-
