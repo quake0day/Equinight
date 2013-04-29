@@ -4,7 +4,9 @@ import pgn
 import eco
 import ast
 from numpy import *
-from os import remove,close
+from numpy.random import random
+import peach as p
+from os import remove, close
 from tempfile import mkstemp
 from shutil import move
 from pymongo import MongoClient
@@ -28,6 +30,22 @@ class MongoDB:
       #          }
 #data = {}
 
+x = array( [
+    [ 0., 0. ], [ 0., 1. ], [ 0., 2. ], [ 1., 0. ], [ 1., 1. ], [ 1., 2. ],
+    [ 2., 0. ], [ 2., 1. ], [ 2., 2. ], [ 5., 5. ], [ 5., 6. ], [ 5., 7. ],
+    [ 6., 5. ], [ 6., 6. ], [ 6., 7. ], [ 7., 5. ], [ 7., 6. ], [ 7., 7. ] ] )
+
+mu = array( [
+    [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.7, 0.3 ],
+    [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.7, 0.3 ], [ 0.3, 0.7 ],
+    [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ],
+    [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ] ] )
+
+m = 1.25
+fcm = p.FuzzyCMeans(x, mu, m)
+
+print fcm(emax=0)
+print fcm.mu
 
 def create_eco_res():
     eco_res = [0] * 500
@@ -106,8 +124,8 @@ def update_existing_record(playername, new_eco_res):
             eco_res = map(func, old_eco_res, new_eco_res)
             eco_res_str = playername+"  "+convert_list_to_string(eco_res)
             old_eco_res_str = playername+"  "+convert_list_to_string(old_eco_res)
-            print eco_res_str
-            print old_eco_res_str
+            #print eco_res_str
+            #print old_eco_res_str
             replace(RESULT, old_eco_res_str, eco_res_str)
 
 
@@ -167,4 +185,4 @@ def parse_pgn(filename):
         save_eco(playername, eco_res)
 
 
-parse_pgn("./data/RR1600in2006Exp.pgn")
+#parse_pgn("./data/RR1600in2006Exp.pgn")
