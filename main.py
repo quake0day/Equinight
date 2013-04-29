@@ -2,7 +2,7 @@
 import os
 import pgn
 import eco
-
+import ast
 from numpy import *
 from pymongo import MongoClient
 import re
@@ -73,15 +73,41 @@ def save_eco(playername, eco_res):
     result_set[0] = playername
     result_set[1] = eco_res
     #print result_set
-    fr = open(RESULT, 'a+')
-    for item in result_set:
-        print item
-        print>>fr, item
-    fr.close()
+    if(find_existing_record(playername)):
+        pass
+    else:
+        fr = open(RESULT, 'a+')
+        for item in result_set:
+            fr.write("%s  " % item)
+        fr.write("\n")
+        fr.close()
     #number_of_lines = len(fr.readlines())
 
     #if playername not in data:
         #data[playername] = eco
+
+
+def update_existing_record(playername, new_eco_res):
+    fr = open(RESULT, 'r+')
+    for line in fr.readlines():
+        if line.find(playername) >= 0:
+            result_set = read_list_from_line(line)
+            old_eco_res = ast.literal_eval(result_set[1])  # change string to list
+            print old_eco_res[0]
+            print new_eco_res[0]
+            func = lambda x, y: x+y
+            eco_res = map(func, old_eco_res, new_eco_res)
+            print eco_res
+            #s = line.replace("")
+
+
+def read_list_from_line(line):
+    result_set = ["", ""]
+    data = line.split("  ")
+    if(len(data) == 3):
+        result_set[0] = data[0]
+        result_set[1] = data[1]
+    return result_set
 
 
 def find_existing_record(playername):
@@ -108,7 +134,7 @@ def parse_pgn(filename):
         playername = game.white
         eco_res = cal_eco_res(dataset, eco_, res)
         #save_eco(playername, eco_res)
-        print find_existing_record(playername)
+        update_existing_record(playername, eco_res)
 
     #print games[0].moves
     #print pgn.dumps(games[0])
