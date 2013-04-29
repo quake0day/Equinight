@@ -17,7 +17,7 @@ DB_URL = 'localhost'
 DB_PORT = 27017
 DB_NAME = 'eco-record'
 RESULT = 'result.txt'
-RESULT_TEMP = 'temp.txt'
+
 global result_set
 
 class MongoDB:
@@ -30,6 +30,7 @@ class MongoDB:
       #          }
 #data = {}
 
+"""
 x = array( [
     [ 0., 0. ], [ 0., 1. ], [ 0., 2. ], [ 1., 0. ], [ 1., 1. ], [ 1., 2. ],
     [ 2., 0. ], [ 2., 1. ], [ 2., 2. ], [ 5., 5. ], [ 5., 6. ], [ 5., 7. ],
@@ -41,11 +42,18 @@ mu = array( [
     [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ],
     [ 0.3, 0.7 ], [ 0.3, 0.7 ], [ 0.3, 0.7 ] ] )
 
+x = array([['A','B'],['A','B'],['A','B'],['A','B'],['A','B'],['A','B']])
+print x
+mu = array([[ 0.7, 0.3 ],[ 0.7, 0.3 ],[ 0.7, 0.3 ],[ 0.7, 0.3 ],[ 0.7, 0.3 ],[ 0.7, 0.3 ]])
+print mu
 m = 1.25
-fcm = p.FuzzyCMeans(x, mu, m)
+#fcm = p.FuzzyCMeans(x, mu, m)
 
 print fcm(emax=0)
 print fcm.mu
+"""
+
+
 
 def create_eco_res():
     eco_res = [0] * 500
@@ -185,4 +193,4 @@ def parse_pgn(filename):
         save_eco(playername, eco_res)
 
 
-#parse_pgn("./data/RR1600in2006Exp.pgn")
+parse_pgn("./data/RR1600in2006Exp.pgn")
