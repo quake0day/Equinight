@@ -2,13 +2,13 @@ import string, os, sys
 import pgn
 import eco
 import ast
-from numpy import *
-from numpy.random import random
-import peach as p
+#from numpy import *
+#from numpy.random import random
+#import peach as p
 from os import remove, close
 from tempfile import mkstemp
 from shutil import move
-from pymongo import MongoClient
+#from pymongo import MongoClient
 import re
 
 # database parameters for mongodb
