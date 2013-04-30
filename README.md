@@ -25,6 +25,13 @@ Chess fuzzy analysis
 
 	sudo pip install bitarray
 
+## Result
+
+[World Champion](http://cl.ly/1S3H470h1L2r)
+
+[Candidates and Interzonals](http://cl.ly/2u1n1T061G1W)
+
+[Regan's (duplicate data and partial)](http://cl.ly/1f1M0I060M16)
 
 ## Team
 Si Chen
