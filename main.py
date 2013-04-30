@@ -1,5 +1,4 @@
-
-import os
+import string, os, sys
 import pgn
 import eco
 import ast
@@ -68,13 +67,18 @@ def parse_res(res_string):
         res = 1
     elif "0-1" in res_string:
         res = 0
+    else:
+        res = 0
     return res
 
 
 def cal_eco_res(dataset, eco, res):
     # parse eco
-    m = re.search('(?<=[A-E])\w+', eco)
-    index = int(m.group(0))
+    m = re.search('(?<=[A-E])\w+', eco)    
+    try:
+        index = int(m.group(0))
+    except Exception, e:
+        index = 0
     if 'A' in eco:
         if(index >= 0 and index < 100):
             dataset[index] = dataset[index] + res
@@ -185,12 +189,30 @@ def parse_pgn(filename):
         #print game.moves
         #moves = game.moves[0]+" "+game.moves[1]+" "+game.moves[2]+" "+game.moves[3]
         #print game.result
-        res = parse_res(game.result)
-        eco_ = eco.from_moves(game.moves)[0][0]
-        dataset = create_eco_res()
-        playername = game.white
-        eco_res = cal_eco_res(dataset, eco_, res)
-        save_eco(playername, eco_res)
+        if(game.result != None and game.moves != None and game.white != None):
+            res = parse_res(game.result)
+            eco_ = eco.from_moves(game.moves)[0][0]
+            dataset = create_eco_res()
+            playername = game.white
+            eco_res = cal_eco_res(dataset, eco_, res)
+            save_eco(playername, eco_res)
 
 
-parse_pgn("./data/RR1600in2006Exp.pgn")
+
+#dir = '/Volumes/Macintosh HD/Users/quake/Documents/PGNs/analysis'
+dir = './data2/'
+print '----------- no sub dir'
+
+files = os.listdir(dir)
+for f in files:
+    print dir + os.sep + f
+
+print '----------- all dir'
+
+for root, dirs, files in os.walk(dir):
+    for name in files:
+        if "DS_Store" not in name:
+            print os.path.join(root, name)
+            parse_pgn(os.path.join(root, name))
+
+#parse_pgn("./data/RR1600in2006Exp.pgn")
