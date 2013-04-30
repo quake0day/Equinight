@@ -25,6 +25,9 @@ Chess fuzzy analysis
 
 	sudo pip install bitarray
 
+## Slides
+[Download](http://cl.ly/2S28453x0v0C)
+
 ## Result
 
 [World Champion](http://cl.ly/1S3H470h1L2r)
